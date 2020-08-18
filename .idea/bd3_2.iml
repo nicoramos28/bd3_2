@@ -4,8 +4,8 @@
     <exclude-output />
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/p2" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/out/production/bd3_2/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/p2/src/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/p2/resources" type="java-resource" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

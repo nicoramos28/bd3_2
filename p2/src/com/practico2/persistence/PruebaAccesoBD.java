@@ -1,15 +1,21 @@
 package src.com.practico2.persistence;
 
+
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.*;
 import java.util.Properties;
 
 public class PruebaAccesoBD {
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         /* 1. cargo dinamicamente el driver de MySQL y sus properties */
         Properties properties = new Properties();
+        String nomArch = "p2/resources/conf/application.properties";
+        properties.load (new FileInputStream(nomArch));
+
         String username = properties.getProperty("username");
         String host = properties.getProperty("host");
         String pass = properties.getProperty("password");
