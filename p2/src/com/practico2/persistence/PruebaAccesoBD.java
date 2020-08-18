@@ -1,21 +1,28 @@
 package src.com.practico2.persistence;
 
-
 import java.sql.*;
+import java.util.Properties;
 
 public class PruebaAccesoBD {
 
+
     public static void main(String[] args) {
 
-        /* 1. cargo dinamicamente el driver de MySQL */
+        /* 1. cargo dinamicamente el driver de MySQL y sus properties */
+        Properties properties = new Properties();
+        String username = properties.getProperty("username");
+        String host = properties.getProperty("host");
+        String pass = properties.getProperty("password");
+        String db = properties.getProperty("db-name");
         String driver = "com.mysql.jdbc.Driver";
 
+        System.out.println("PROPERTIES ARE " + username + " " + host + " " + pass + " " + db + " ");
         try {
             Class.forName(driver);
 
             /* 2. una vez cargado el driver, me conecto con la base de datos */
-            String url = "jdbc:mysql://localhost:3306/Prueba";
-            Connection con = DriverManager.getConnection(url, "admin", "astropay");
+            String url = "jdbc:mysql://"+ host + "/" + db;
+            Connection con = DriverManager.getConnection(url, username, pass);
 
             /* 3. creo un PreparedStatement para insertar una persona en base de datos */
             String insert = "INSERT into Personas values (?)";
