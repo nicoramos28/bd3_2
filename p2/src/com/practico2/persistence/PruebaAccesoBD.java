@@ -1,8 +1,10 @@
 package src.com.practico2.persistence;
 
 
+import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.sql.*;
 import java.util.Properties;
 
@@ -93,5 +95,60 @@ public class PruebaAccesoBD {
 //            e.printStackTrace();
 //        }
 
+        /*** Ejercicio 3 ***/
+
+        boolean hasEnded = false;
+        Connection connection = null;
+        int rows = 0;
+        try {
+            Class.forName(driver);
+            String url = "jdbc:mysql://"+ host + "/" + db;
+            connection = DriverManager.getConnection(url, username, pass);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        
+        while (!hasEnded){
+            System.out.println("\n\n########################################");
+            System.out.println("\nIngrese el comando : ");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+            String input = reader.readLine();
+            switch (input.toUpperCase()){
+                case "EXIT" :
+                    hasEnded = true;
+                    System.out.println("Hasta la proxima!");
+                    try {
+                        connection.close();
+                    } catch (SQLException throwables) {
+                        System.out.println("Error cerrando la conexion.");
+                    }
+                default :
+                    try {
+                        PreparedStatement preparedStatement = connection.prepareStatement(input);
+                        rows = preparedStatement.executeUpdate();
+                        System.out.println("Cantidad de filas afectadas :" + rows);
+                        preparedStatement.close();
+                    } catch (SQLException throwables) {
+                        System.out.println("El comando ingresado es incorrecto.");
+                    }
+            }
+        }
+
+        
+
+        /* Connection to re-use
+        try {
+            Class.forName(driver);
+            String url = "jdbc:mysql://"+ host + "/" + db;
+            Connection connection = DriverManager.getConnection(url, username, pass);
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+         */
     }
 }
