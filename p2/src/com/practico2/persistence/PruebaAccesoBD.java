@@ -72,7 +72,7 @@ public class PruebaAccesoBD {
 //
 //            String sql1 = "Create table Personas (cedula int, nombre varchar(45), apellido varchar(45), primary key (cedula))";
 //            String sql2 = "Create table Maestras (cedula int, grupo varchar(45), primary key (cedula), FOREIGN KEY (cedula) REFERENCES Personas(cedula))";
-//            String sql3 = "Create table Alumnos (cedula int, cedulaMaestra varchar(45), primary key (cedula), FOREIGN KEY (cedula) REFERENCES Personas(cedula))";
+//            String sql3 = "Create table Alumnos (cedula int, cedulaMaestra int, primary key (cedula), FOREIGN KEY (cedula) REFERENCES Personas(cedula), FOREIGN KEY (cedulaMaestra) references Maestras(cedula))";
 //
 //            Statement stmt1 = connection.createStatement();
 //            Statement stmt2 = connection.createStatement();
@@ -111,12 +111,16 @@ public class PruebaAccesoBD {
         }
         
         while (!hasEnded){
-            System.out.println("\n\n########################################");
-            System.out.println("\nIngrese el comando : ");
+            System.out.println("\n########################################");
+            System.out.println("## 1 - Ingresar comando manualmente.  ##");
+            System.out.println("## 2 - Maestra con mas alumnos.       ##");
+            System.out.println("## 3 - Salir.                         ##");
+            System.out.println("########################################");
+
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
             String input = reader.readLine();
-            switch (input.toUpperCase()){
-                case "EXIT" :
+            switch (input){
+                case "3" :
                     hasEnded = true;
                     System.out.println("Hasta la proxima!");
                     try {
@@ -124,15 +128,44 @@ public class PruebaAccesoBD {
                     } catch (SQLException throwables) {
                         System.out.println("Error cerrando la conexion.");
                     }
-                default :
+                    break;
+                case "1" :
                     try {
-                        PreparedStatement preparedStatement = connection.prepareStatement(input);
+                        System.out.println("\n\nIngrese comando : ");
+
+                        BufferedReader readerQuery = new BufferedReader(new InputStreamReader(System.in));
+                        String command = reader.readLine();
+                        PreparedStatement preparedStatement = connection.prepareStatement(command);
                         rows = preparedStatement.executeUpdate();
+
                         System.out.println("Cantidad de filas afectadas :" + rows);
+
                         preparedStatement.close();
                     } catch (SQLException throwables) {
                         System.out.println("El comando ingresado es incorrecto.");
                     }
+                    break;
+                case "2" :
+                    try {
+                        Statement statement = connection.createStatement();
+                        String query = "Select p.nombre, p.apellido from Personas p, Maestras m where p.cedula = m.cedula and m.cedula =" +
+                                "(Select cedulaMaestra from Alumnos group by cedulaMaestra order by count(*) desc  limit 1);";
+
+                        ResultSet result = statement.executeQuery(query);
+                        while (result.next()){
+                            String nombre = result.getString("nombre");
+                            String apellido = result.getString("apellido");
+                            System.out.println ("\nLa maestra con mas alumnos es : " + nombre + " " + apellido);
+                        }
+                        result.close();
+                        statement.close();
+                    } catch (SQLException throwables) {
+                        System.out.println("No se pudo calcular el total de alumnos por Maestra.");
+                    }
+                    break;
+                default :
+                    System.out.println("La opcion ingresada es incorrecta, por favor, intente nuevamente.");
+                    break;
             }
         }
 
