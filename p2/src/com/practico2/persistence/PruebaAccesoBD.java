@@ -114,13 +114,14 @@ public class PruebaAccesoBD {
             System.out.println("\n########################################");
             System.out.println("## 1 - Ingresar comando manualmente.  ##");
             System.out.println("## 2 - Maestra con mas alumnos.       ##");
-            System.out.println("## 3 - Salir.                         ##");
+            System.out.println("## 3 - Maestra con mas alumnos-detalle##");
+            System.out.println("## 4 - Salir.                         ##");
             System.out.println("########################################");
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
             String input = reader.readLine();
             switch (input){
-                case "3" :
+                case "4" :
                     hasEnded = true;
                     System.out.println("Hasta la proxima!");
                     try {
@@ -163,13 +164,56 @@ public class PruebaAccesoBD {
                         System.out.println("No se pudo calcular el total de alumnos por Maestra.");
                     }
                     break;
+                case "3" :
+                    int cantidadMayor = 0;
+                    int cedulaMayor = 0;
+                    try {
+                        //Cedulas de maestras
+                        Statement statement1 = connection.createStatement();
+                        String query1 = "Select cedula from Maestras";
+                        ResultSet result1 = statement1.executeQuery(query1);
+
+                        //Cantidad de alumnos por maestra
+                        String cantAlmunos = "Select count(*) as cantidad from Alumnos where cedulaMaestra = ?";
+                        PreparedStatement preparedStmAlumnos = connection.prepareStatement(cantAlmunos);
+                        System.out.println("Datos de las Maestras del sistema :\n");
+                        System.out.println("---------------------------");
+                        while (result1.next()){
+                            preparedStmAlumnos.setInt(1, result1.getInt("cedula"));
+                            ResultSet cantidadActual = preparedStmAlumnos.executeQuery();
+
+                            System.out.println("Cedula :" + result1.getInt("cedula"));
+                            while(cantidadActual.next()){
+                                System.out.println("Cantidad de alumnos : " + cantidadActual.getInt("cantidad"));
+                                System.out.println("---------------------------\n");
+                                if(cantidadActual.getInt("cantidad") > cantidadMayor){
+                                    cantidadMayor = cantidadActual.getInt("cantidad");
+                                    cedulaMayor = result1.getInt("cedula");
+                                }
+                            }
+                        }
+
+                        //Datos personales de maestra con más alumnos
+                        String datosMaestra = "Select nombre, apellido from Personas where cedula = ?";
+                        PreparedStatement preparedStatement1 = connection.prepareStatement(datosMaestra);
+                        preparedStatement1.setInt(1, cedulaMayor);
+                        ResultSet nombreMaestra = preparedStatement1.executeQuery();
+
+                        while(nombreMaestra.next()){
+                            System.out.println("La maestra con mayor cantidad de alumnos es " + nombreMaestra.getString("nombre")
+                                    + " " + nombreMaestra.getString("apellido"));
+                        }
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                    break;
                 default :
                     System.out.println("La opcion ingresada es incorrecta, por favor, intente nuevamente.");
                     break;
             }
         }
 
-        
+
 
         /* Connection to re-use
         try {
