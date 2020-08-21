@@ -1,6 +1,5 @@
 package src.com.practico2.persistence;
 
-
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -115,13 +114,14 @@ public class PruebaAccesoBD {
             System.out.println("## 1 - Ingresar comando manualmente.  ##");
             System.out.println("## 2 - Maestra con mas alumnos.       ##");
             System.out.println("## 3 - Maestra con mas alumnos-detalle##");
-            System.out.println("## 4 - Salir.                         ##");
+            System.out.println("## 4 - Consultas del SP               ##");
+            System.out.println("## 9 - Salir.                         ##");
             System.out.println("########################################");
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
             String input = reader.readLine();
             switch (input){
-                case "4" :
+                case "9" :
                     hasEnded = true;
                     System.out.println("Hasta la proxima!");
                     try {
@@ -199,10 +199,67 @@ public class PruebaAccesoBD {
                         preparedStatement1.setInt(1, cedulaMayor);
                         ResultSet nombreMaestra = preparedStatement1.executeQuery();
 
-                        while(nombreMaestra.next()){
+                        if(nombreMaestra.next()){
                             System.out.println("La maestra con mayor cantidad de alumnos es " + nombreMaestra.getString("nombre")
                                     + " " + nombreMaestra.getString("apellido"));
                         }
+                        statement1.close();
+                        preparedStmAlumnos.close();
+                        preparedStatement1.close();
+
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                    break;
+                case "4":
+                    System.out.println("Las consultas ejecutadas sobre el Store Procedure son : \n\n");
+
+//                   CONSULTAS DEL SP :
+//                   1- SELECT a.cedula FROM Alumnos a WHERE a.cedulaMaestra = ced;
+//                   2- SELECT grupo FROM Maestras m WHERE m.cedula = ced;
+//                   3- SELECT nombre, apellido FROM Personas p WHERE p.cedula = ced;
+                    String query1 = "SELECT a.cedula FROM Alumnos a WHERE a.cedulaMaestra = ?";
+                    String query2 = "SELECT grupo FROM Maestras m WHERE m.cedula = ?";
+                    String query3 = "SELECT nombre, apellido FROM Personas p WHERE p.cedula = ?";
+
+                    try {
+                        Statement statement1 = connection.createStatement();
+                        String query4 = "Select cedula from Maestras";
+                        ResultSet result1 = statement1.executeQuery(query4);
+                        while(result1.next()){
+                            int ced = result1.getInt("cedula");
+                            PreparedStatement preparedQuery1 = connection.prepareStatement(query1);
+                            PreparedStatement preparedQuery2 = connection.prepareStatement(query2);
+                            PreparedStatement preparedQuery3 = connection.prepareStatement(query3);
+                            preparedQuery1.setInt(1,ced);
+                            preparedQuery2.setInt(1,ced);
+                            preparedQuery3.setInt(1,ced);
+                            ResultSet prepared1 = preparedQuery1.executeQuery();
+                            ResultSet prepared2 = preparedQuery2.executeQuery();
+                            ResultSet prepared3 = preparedQuery3.executeQuery();
+
+                            //Primera query
+                            System.out.println("---------------------------");
+                            System.out.println("\nPrimera query : SELECT a.cedula FROM Alumnos a WHERE a.cedulaMaestra = ced;\nRESULTADO: ");
+                            while(prepared1.next()){
+                                System.out.println("Cedula : "+prepared1.getInt("cedula"));
+                            }
+                            //Segunda query
+                            System.out.println("---------------------------");
+                            System.out.println("\nSegunda query : SELECT grupo FROM Maestras m WHERE m.cedula = ced;\nRESULTADO: ");
+                            while(prepared2.next()){
+                                System.out.println("Grupo : "+prepared2.getString("grupo"));
+                            }
+                            //Tercera query
+                            System.out.println("---------------------------");
+                            System.out.println("\nTercera query : SELECT nombre, apellido FROM Personas p WHERE p.cedula = ced;\nRESULTADO: ");
+                            while(prepared3.next()){
+                                System.out.println("Nombre : "+prepared3.getString("nombre"));
+                                System.out.println("Apellido : "+prepared3.getString("apellido"));
+                            }
+                        }
+                        result1.close();
+                        statement1.close();
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
                     }
