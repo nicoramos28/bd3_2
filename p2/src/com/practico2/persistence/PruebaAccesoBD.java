@@ -10,7 +10,7 @@ import java.util.Properties;
 public class PruebaAccesoBD {
 
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, SQLException {
 
         /* 1. cargo dinamicamente el driver de MySQL y sus properties */
         Properties properties = new Properties();
@@ -162,6 +162,7 @@ public class PruebaAccesoBD {
                         statement.close();
                     } catch (SQLException throwables) {
                         System.out.println("No se pudo calcular el total de alumnos por Maestra.");
+                        System.out.println(throwables);
                     }
                     break;
                 case "3" :
@@ -224,6 +225,8 @@ public class PruebaAccesoBD {
 
                     try {
                         Statement statement1 = connection.createStatement();
+                        connection.setTransactionIsolation(connection.TRANSACTION_SERIALIZABLE);
+                        connection.setAutoCommit(false);
                         String query4 = "Select cedula from Maestras";
                         ResultSet result1 = statement1.executeQuery(query4);
                         while(result1.next()){
@@ -260,7 +263,10 @@ public class PruebaAccesoBD {
                         }
                         result1.close();
                         statement1.close();
+                        connection.commit();
+                        connection.setAutoCommit(true);
                     } catch (SQLException throwables) {
+                        connection.rollback();
                         throwables.printStackTrace();
                     }
                     break;
