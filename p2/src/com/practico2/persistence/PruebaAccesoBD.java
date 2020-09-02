@@ -94,7 +94,7 @@ public class PruebaAccesoBD {
 //            e.printStackTrace();
 //        }
 
-        /*** Ejercicio 3 ***/
+        /*** Ejercicio 3, 4, 5 y 6 ***/
 
         boolean hasEnded = false;
         Connection connection = null;
@@ -115,6 +115,7 @@ public class PruebaAccesoBD {
             System.out.println("## 2 - Maestra con mas alumnos.       ##");
             System.out.println("## 3 - Maestra con mas alumnos-detalle##");
             System.out.println("## 4 - Consultas del SP               ##");
+            System.out.println("## 5 - Datos de la Base               ##");
             System.out.println("## 9 - Salir.                         ##");
             System.out.println("########################################");
 
@@ -214,11 +215,6 @@ public class PruebaAccesoBD {
                     break;
                 case "4":
                     System.out.println("Las consultas ejecutadas sobre el Store Procedure son : \n\n");
-
-//                   CONSULTAS DEL SP :
-//                   1- SELECT a.cedula FROM Alumnos a WHERE a.cedulaMaestra = ced;
-//                   2- SELECT grupo FROM Maestras m WHERE m.cedula = ced;
-//                   3- SELECT nombre, apellido FROM Personas p WHERE p.cedula = ced;
                     String query1 = "SELECT a.cedula FROM Alumnos a WHERE a.cedulaMaestra = ?";
                     String query2 = "SELECT grupo FROM Maestras m WHERE m.cedula = ?";
                     String query3 = "SELECT nombre, apellido FROM Personas p WHERE p.cedula = ?";
@@ -268,6 +264,63 @@ public class PruebaAccesoBD {
                     } catch (SQLException throwables) {
                         connection.rollback();
                         throwables.printStackTrace();
+                    }
+                    break;
+                case "5" :
+                    boolean endDBSearch = true;
+                    while (endDBSearch){
+                        System.out.println("\n########################################");
+                        System.out.println("## 1 - Datos generales.               ##");
+                        System.out.println("## 2 - Datos de una base              ##");
+                        System.out.println("##                                    ##");
+                        System.out.println("## 9 - Volver al menu                 ##");
+                        System.out.println("########################################");
+                        BufferedReader readerDB = new BufferedReader(new InputStreamReader(System.in));
+                        String input2 = readerDB.readLine();
+                        DatabaseMetaData databaseMetaData;
+                        switch (input2){
+                            case "9" :
+                                endDBSearch = false;
+                                break;
+                            case "1" :
+                                 databaseMetaData = connection.getMetaData();
+                                 ResultSet resultSet = databaseMetaData.getTables(null,null,"%",null);
+                                 System.out.println("\nTablas de la BASE");
+                                 System.out.println("----------------------------");
+                                 while(resultSet.next()) {
+                                    System.out.println(resultSet.getString(3));
+                                 }
+                                 System.out.println("----------------------------");
+                                break;
+                            case "2" :
+                                Connection newConnection;
+                                System.out.println("\nIngrese el nombre de la base : ");
+                                BufferedReader readerDDBB = new BufferedReader(new InputStreamReader(System.in));
+                                String bbdd = readerDDBB.readLine();
+                                try {
+                                    Class.forName(driver);
+                                    String newUrl = "jdbc:mysql://"+ host + "/" + bbdd;
+                                    newConnection = DriverManager.getConnection(newUrl, username, pass);
+                                    databaseMetaData = newConnection.getMetaData();
+                                    ResultSet columns = databaseMetaData.getColumns(null,null, "%", null);
+                                    while(columns.next())
+                                    {
+                                        String columnName = columns.getString(3);
+                                        String datatype = columns.getString("DATA_TYPE");
+                                        String columnsize = columns.getString("COLUMN_SIZE");
+                                        System.out.println(columnName + " Tipo : " + datatype + "(" + columnsize + ")");
+                                    }
+                                    newConnection.close();
+                                } catch (ClassNotFoundException e) {
+                                    System.out.println("\nError al leer la base " + bbdd + ". Verifique que su nombre es correcto.");
+                                } catch (SQLException throwables) {
+                                    System.out.println("\nError al leer la base " + bbdd + ". Verifique que su nombre es correcto.");
+                                }
+                                break;
+                            default :
+                                System.out.println("La opcion ingresada es incorrecta, por favor,\nintente nuevamente o ingrese 9 para volver al menu.");
+                                break;
+                        }
                     }
                     break;
                 default :
