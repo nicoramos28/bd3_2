@@ -303,12 +303,16 @@ public class PruebaAccesoBD {
                                     newConnection = DriverManager.getConnection(newUrl, username, pass);
                                     databaseMetaData = newConnection.getMetaData();
                                     ResultSet columns = databaseMetaData.getColumns(null,null, "%", null);
+                                    System.out.println("-----------------------------------");
+                                    System.out.println("-------DATOS DE LA BASE " + bbdd + " -----\n");
+
                                     while(columns.next())
                                     {
                                         String columnName = columns.getString(3);
-                                        String datatype = columns.getString("DATA_TYPE");
+                                        String columnType = columns.getString("COLUMN_NAME");
+                                        String datatype = columns.getString("TYPE_NAME");
                                         String columnsize = columns.getString("COLUMN_SIZE");
-                                        System.out.println(columnName + " Tipo : " + datatype + "(" + columnsize + ")");
+                                        System.out.println(columnName + " Campo : " + columnType + " " + datatype + "(" + columnsize + ")\n");
                                     }
                                     newConnection.close();
                                 } catch (ClassNotFoundException e) {
