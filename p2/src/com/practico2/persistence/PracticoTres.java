@@ -17,7 +17,7 @@ public class PracticoTres {
         String username = properties.getProperty("username");
         String host = properties.getProperty("host");
         String pass = properties.getProperty("password");
-        String db = properties.getProperty("db-name");
+        String db = properties.getProperty("practico3.db-name");
         String driver = "com.mysql.jdbc.Driver";
 
         Connection connection = null;
@@ -37,10 +37,10 @@ public class PracticoTres {
             System.out.println("\n########################################");
             System.out.println("##                                    ##");
             System.out.println("## 1 - Crear la base                  ##");
+            System.out.println("## 2 - Carga de datos primaria        ##");
             System.out.println("##                                    ##");
             System.out.println("##                                    ##");
-            System.out.println("##                                    ##");
-            System.out.println("##                                    ##");
+            System.out.println("## 8 - Salir y eliminar datos         ##");
             System.out.println("## 9 - Salir.                         ##");
             System.out.println("##                                    ##");
             System.out.println("########################################");
@@ -60,10 +60,69 @@ public class PracticoTres {
                     break;
                 case "1" :
                     String query = "CREATE DATABASE practico3";
+                    String createTable1 = "Create table practico3.Examenes (codigo VARCHAR(45), materia VARCHAR(45), periodo VARCHAR(45))";
+                    String createTable2 = "Create table practico3.Resultados (cedula INT, codigo VARCHAR(45), calificacion INT)";
+
                     PreparedStatement preparedStatement = connection.prepareStatement(query);
+                    PreparedStatement preparedInsert1 = connection.prepareStatement(createTable1);
+                    PreparedStatement preparedInsert2 = connection.prepareStatement(createTable2);
+
                     int result = preparedStatement.executeUpdate();
-                    System.out.println("Cant de lineas afectadas : " + result);
+                    int insert1 = preparedInsert1.executeUpdate();
+                    int insert2 = preparedInsert2.executeUpdate();
+
+                    if(result != 0){
+                        System.out.println("Base creada con éxito");
+                    }else{
+                        System.out.println("Error al crear base de datos");
+                    }
                     preparedStatement.close();
+                    preparedInsert1.close();
+                    preparedInsert2.close();
+                    break;
+                case "2":
+                    String insertExamen = "Insert into Examenes values (?, ?, ?)";
+                    String insertResultados = "Insert into Resultados values (1111, 'MD2019Dic', 3)," +
+                            "  (2222, 'BD22019Dic', 9)," +
+                            "  (3333, 'MD2020Feb', 2)," +
+                            "  (3333, 'P22020Feb', 10)," +
+                            "  (4444, 'MD2019Dic', 0)," +
+                            "  (4444, 'BD22019Dic', 0)," +
+                            "  (4444, 'MD2020Feb', 6)";
+
+                    PreparedStatement examen = connection.prepareStatement(insertExamen);
+                    PreparedStatement resultados = connection.prepareStatement(insertResultados);
+
+                    examen.setString(1, "MD2019Dic");
+                    examen.setString(2, "Matemática discreta");
+                    examen.setString(3, "Diciembre 2019");
+                    examen.executeUpdate();
+
+                    examen.setString(1, "P12019Dic");
+                    examen.setString(2, "Programación 1");
+                    examen.setString(3, "Diciembre 2019");
+                    examen.executeUpdate();
+
+                    examen.setString(1, "BD22019Dic");
+                    examen.setString(2, "Bases de datos 2");
+                    examen.setString(3, "Diciembre 2019");
+                    examen.executeUpdate();
+
+                    examen.setString(1, "MD2020Feb");
+                    examen.setString(2, "Matemática discreta");
+                    examen.setString(3, "Febrero 2020");
+                    examen.executeUpdate();
+
+                    examen.setString(1, "P22020Feb");
+                    examen.setString(2, "Programación 2");
+                    examen.setString(3, "Febrero 2020");
+
+                    examen.executeUpdate();
+                    resultados.executeUpdate();
+
+                    examen.close();
+                    resultados.close();
+                    break;
             }
         }
 
