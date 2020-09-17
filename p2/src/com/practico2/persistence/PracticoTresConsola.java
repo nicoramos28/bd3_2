@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 import java.sql.*;
 import java.util.Properties;
 
-public class PracticoTres {
+public class PracticoTresConsola {
 
     public static void main(String[] args) throws IOException, SQLException {
 
@@ -59,24 +59,15 @@ public class PracticoTres {
                     }
                     break;
                 case "1" :
-                    String query = "CREATE DATABASE practico3";
                     String createTable1 = "Create table practico3.Examenes (codigo VARCHAR(45), materia VARCHAR(45), periodo VARCHAR(45))";
                     String createTable2 = "Create table practico3.Resultados (cedula INT, codigo VARCHAR(45), calificacion INT)";
 
-                    PreparedStatement preparedStatement = connection.prepareStatement(query);
                     PreparedStatement preparedInsert1 = connection.prepareStatement(createTable1);
                     PreparedStatement preparedInsert2 = connection.prepareStatement(createTable2);
 
-                    int result = preparedStatement.executeUpdate();
                     int insert1 = preparedInsert1.executeUpdate();
                     int insert2 = preparedInsert2.executeUpdate();
 
-                    if(result != 0){
-                        System.out.println("Base creada con éxito");
-                    }else{
-                        System.out.println("Error al crear base de datos");
-                    }
-                    preparedStatement.close();
                     preparedInsert1.close();
                     preparedInsert2.close();
                     break;
