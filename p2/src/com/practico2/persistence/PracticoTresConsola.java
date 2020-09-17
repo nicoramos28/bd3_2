@@ -38,7 +38,7 @@ public class PracticoTresConsola {
             System.out.println("##                                    ##");
             System.out.println("## 1 - Crear la base                  ##");
             System.out.println("## 2 - Carga de datos primaria        ##");
-            System.out.println("##                                    ##");
+            System.out.println("## 3 - Prueba metodos                 ##");
             System.out.println("##                                    ##");
             System.out.println("## 8 - Salir y eliminar datos         ##");
             System.out.println("## 9 - Salir.                         ##");
@@ -114,10 +114,12 @@ public class PracticoTresConsola {
                     examen.close();
                     resultados.close();
                     break;
+                case "3":
+                    DatabaseAccess databaseAccess = new DatabaseAccess();
+                    Boolean probando = databaseAccess.insertarResultado(1111,"MD2019Dic", 10);
+                    System.out.println("RESULTADO : \n" + probando);
+                    break;
             }
         }
-
     }
-
-
 }

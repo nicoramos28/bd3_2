@@ -7,7 +7,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class databaseContext {
+public class DatabaseContext {
 
     private String username;
 
@@ -23,7 +23,7 @@ public class databaseContext {
 
     private Connection connection;
 
-    public databaseContext() throws IOException {
+    public DatabaseContext() throws IOException {
 
         Properties properties = new Properties();
 
@@ -42,10 +42,22 @@ public class databaseContext {
     private Connection createDBConnection(){
         try {
             Class.forName(driver);
-            connection = DriverManager.getConnection(url,username,pass);
+            this.connection = DriverManager.getConnection(url,username,pass);
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
-        return connection;
+        return this.connection;
+    }
+
+    public void closeDBConnection(){
+        try {
+            this.connection.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+    public Connection getConnection() {
+        return this.connection;
     }
 }
