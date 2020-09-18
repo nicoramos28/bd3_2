@@ -24,7 +24,7 @@
       <component id="3046f" class="javax.swing.JTable" binding="table1" default-binding="true">
         <constraints>
           <grid row="2" column="0" row-span="3" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false">
-            <preferred-size width="150" height="107"/>
+            <preferred-size width="200" height="150"/>
           </grid>
         </constraints>
         <properties/>
@@ -40,7 +40,7 @@
       </component>
       <component id="4d44e" class="javax.swing.JLabel" binding="cedulaLabel">
         <constraints>
-          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <foreground color="-16777216"/>
@@ -50,7 +50,7 @@
       <component id="f9e87" class="javax.swing.JTextArea" binding="cedulaArea">
         <constraints>
           <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false">
-            <preferred-size width="150" height="50"/>
+            <preferred-size width="100" height="25"/>
           </grid>
         </constraints>
         <properties>
@@ -61,14 +61,14 @@
       <component id="3f77d" class="javax.swing.JTextArea" binding="resultadoArea">
         <constraints>
           <grid row="3" column="1" row-span="2" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false">
-            <preferred-size width="150" height="50"/>
+            <preferred-size width="100" height="25"/>
           </grid>
         </constraints>
         <properties/>
       </component>
       <component id="cf655" class="javax.swing.JLabel" binding="resultadoLabel">
         <constraints>
-          <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <foreground color="-16777216"/>
