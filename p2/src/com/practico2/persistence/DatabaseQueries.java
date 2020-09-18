@@ -7,11 +7,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class DatabaseAccess {
+public class DatabaseQueries {
 
     DatabaseContext databaseContext = new DatabaseContext();
 
-    public DatabaseAccess() throws IOException {
+    public DatabaseQueries() throws IOException {
     }
 
     /* crea el texto de la consulta que obtiene un listado de todos los exámenes registrados en la BD */

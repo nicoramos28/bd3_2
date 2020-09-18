@@ -1,10 +1,14 @@
 package src.com.practico2.persistence;
 
+import src.com.practico2.api.Examen;
+import src.com.practico2.api.Resultado;
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.*;
+import java.util.List;
 import java.util.Properties;
 
 public class PracticoTresConsola {
@@ -115,9 +119,9 @@ public class PracticoTresConsola {
                     resultados.close();
                     break;
                 case "3":
-                    DatabaseAccess databaseAccess = new DatabaseAccess();
-                    Boolean probando = databaseAccess.insertarResultado(1111,"MD2019Dic", 10);
-                    System.out.println("RESULTADO : \n" + probando);
+                    DatabaseContext databaseContext = new DatabaseContext();
+                    Resultado res = new Resultado(1111,"MD2019Dic",10);
+                    databaseContext.ingresarResultado(databaseContext.getConnection(), res);
                     break;
             }
         }
