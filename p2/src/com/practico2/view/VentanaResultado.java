@@ -11,7 +11,7 @@ public class VentanaResultado {
     private JTextArea resultadoArea;
     private JLabel cedulaLabel;
     private JLabel resultadoLabel;
-    private JTable table1;
+    private JTable examenesListado;
 
     public VentanaResultado() {
         ingresarResultadoBtn.addActionListener(new ActionListener() {

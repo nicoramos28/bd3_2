@@ -21,13 +21,16 @@
           <text value="Ingresar Resultado"/>
         </properties>
       </component>
-      <component id="3046f" class="javax.swing.JTable" binding="table1" default-binding="true">
+      <component id="3046f" class="javax.swing.JTable" binding="examenesListado">
         <constraints>
-          <grid row="2" column="0" row-span="3" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false">
+          <grid row="2" column="0" row-span="3" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="1" use-parent-layout="false">
             <preferred-size width="200" height="150"/>
           </grid>
         </constraints>
-        <properties/>
+        <properties>
+          <autoCreateRowSorter value="false"/>
+          <background color="-984577"/>
+        </properties>
       </component>
       <component id="1056e" class="javax.swing.JLabel">
         <constraints>
